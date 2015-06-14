@@ -10,7 +10,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
-    	"php": ">=5.3.3"
+    	"php": ">=5.3.3",
     	"bricks81/bricks-config": "0.*@stable",
     	"bricks81/bricks-class-loader": "0.*@stable"    	      
     },
