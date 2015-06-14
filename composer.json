@@ -1,0 +1,20 @@
+{
+    "name": "bricks81/bricks-plugin",
+    "description": "Using Plugins by recompiling classes for triggering events.",
+    "license": "GPLv3",
+    "authors": [
+        {
+            "name": "Sven Ullmann",
+            "email": "kontakt@28-n-half.de"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+    	"php": ">=5.3.3"
+    	"bricks81/bricks-config": "0.*@stable",
+    	"bricks81/bricks-class-loader": "0.*@stable"    	      
+    },
+    "autoload": {
+    	"classmap": ["Module.php"]
+    }
+}
