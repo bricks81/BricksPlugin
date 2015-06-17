@@ -19,11 +19,11 @@
     },
     "repositories": [
     	{
-    		"type":"VCS",
+    		"type":"vcs",
     		"url":"https://github.com/bricks81/BricksConfig.git"
     	},
     	{
-    		"type":"VCS",
+    		"type":"vcs",
     		"url":"https://github.com/bricks81/BricksClassLoader.git"
     	}
     ]
