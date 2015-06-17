@@ -15,5 +15,5 @@
     },
     "autoload": {
     	"classmap": ["Module.php"]
-    },    
+    }
 }
