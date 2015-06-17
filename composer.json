@@ -11,7 +11,7 @@
     "minimum-stability": "dev",
     "require": {
     	"php": ">=5.3.3",
-    	"bricks81/bricks-config": "dev-master",    	    	      
+    	"bricks81/bricks-config": "dev-master"   	    	      
     },
     "autoload": {
     	"classmap": ["Module.php"]
