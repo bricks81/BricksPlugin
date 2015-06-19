@@ -12,7 +12,7 @@ use Bricks\File\Directory;
 use Zend\Config\Config;
 use Zend\Config\Writer\WriterInterface;
 
-class FilesystemAdapter implements AdapterInterface {
+class FilesystemAdapter implements StorageAdapterInterface {
 	
 	/**
 	 * (non-PHPdoc)
@@ -46,7 +46,7 @@ class FilesystemAdapter implements AdapterInterface {
 	 * @see \Bricks\Plugin\StorageAdapter\AdapterInterface::loadConfig()
 	 */
 	public function loadConfig($filename){
-		return new ZendConfig(require($filename),true);
+		return new Config(require($filename),true);
 	}
 	
 	/**
@@ -71,36 +71,6 @@ class FilesystemAdapter implements AdapterInterface {
 	 */
 	public function fileExists($filename){
 		return file_exists($filename);
-	}
-
-	/**
-	 * @param string $cachedir
-	 */
-	public function setCacheDir($cachedir);
-	
-	/**
-	 * @return string
-	*/
-	public function getCacheDir();
-	
-	/**
-	 * @param string $filename
-	*/
-	public function setClassModFileName($filename);
-	
-	/**
-	 * @return string
-	*/
-	public function getClassModFileName();
-	
-	/**
-	 * @param string $filename
-	*/
-	public function setAutoloadMapFileName($filename);
-	
-	/**
-	 * @return string
-	*/
-	public function getAutoloadMapFileName();
+	}	
 	
 }

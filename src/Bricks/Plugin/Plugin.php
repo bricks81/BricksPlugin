@@ -11,71 +11,224 @@ namespace Bricks\Plugin;
 use Bricks\ClassLoader\ClassLoaderInterface;
 use Bricks\Plugin\StorageAdapter\AdapterInterface;
 use Bricks\Config\ConfigInterface;
+use Zend\Config\Config;
+use Bricks\Asset\StorageAdapter\StorageAdapterInterface;
+use Zend\Config\Writer\PhpArray;
 
 class Plugin {
 	
+	/**
+	 * @var ClassLoaderInterface
+	 */
 	protected $classLoader;
 		
+	/**
+	 * @var ConfigInterface
+	 */
 	protected $config;
 	
+	/**
+	 * @var array
+	 */
 	protected $loadedModules = array();
 	
+	/**
+	 * @var array
+	 */
 	protected $modules = array();
 	
+	/**
+	 * @var StorageAdapterInterface
+	 */
+	protected $storageAdapter;
+	
+	/**
+	 * @var array
+	 */
+	protected $pluginConfig = array();
+	
+	/**
+	 * @var \Zend\Config\Config
+	 */
+	protected $classMod;
+	
+	/**
+	 * @var \Zend\Config\Config
+	 */
+	protected $autoloadMap;
+	
+	/**
+	 * @param ConfigInterface $config
+	 * @param ClassLoaderInterface $classLoader
+	 * @param array $loadedModules
+	 */
 	public function __construct(
-		ConfigInterface $config,
+		ConfigInterface $config,				
 		ClassLoaderInterface $classLoader,		
-		array $loadedModules=array())
-	{
+		array $loadedModules=array()
+	){
 		$this->setConfig($config);
 		$this->setClassLoader($classLoader);				
 		$this->setLoadedModules($loadedModules);
+		$this->pluginConfig = $config->getConfig()->getZendConfig()->BricksPlugin->toArray();				
 	}
 	
+	/**
+	 * @param ClassLoaderInterface $classLoader
+	 */
 	public function setClassLoader(ClassLoaderInterface $classLoader){
 		$this->classLoader = $classLoader;
 	}
 	
+	/**
+	 * @return \Bricks\ClassLoader\ClassLoaderInterface
+	 */
 	public function getClassLoader(){
 		return $this->classLoader;
 	}
 	
+	/**
+	 * @param ConfigInterface $config
+	 */
 	public function setConfig(ConfigInterface $config){
 		$this->config = $config;
 	}
 	
+	/**
+	 * @return \Bricks\Config\ConfigInterface
+	 */
 	public function getConfig(){
 		return $this->config;
 	}
 	
+	/**
+	 * @param array $loadedModules
+	 */
 	public function setLoadedModules(array $loadedModules){
 		$this->loadedModules = $loadedModules;
 	}
 	
+	/**
+	 * @return array
+	 */
 	public function getLoadedModules(){
 		return $this->loadedModules;
 	}
 	
+	/**
+	 * @return StorageAdapterInterface
+	 */
+	public function getStorageAdapter(){
+		if(!$this->storageAdapter){
+			$this->storageAdapter = $this->getClassLoader()->newInstance(
+				__CLASS__,__FUNCTION__,'storageAdapter','BricksPlugin',array(
+					'BricksPlugin' => $this
+				)
+			);
+		}
+		return $this->storageAdapter;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getCachedir(){
+		return $this->pluginConfig['cachedir'];
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getClassModFilename(){
+		return $this->pluginConfig['classModFilename'];
+	}
+	
+	/**
+	 * @return Config
+	 * @throws \RuntimeException
+	 */
+	public function getClassMod(){
+		if(!$this->classMod){	
+			$adapter = $this->getStorageAdapter();
+			$cachedir = $this->getCachedir();
+			$file = $cachedir.'/'.$this->getClassModFilename();
+			if(!$adapter->fileExists($file)){
+				$this->classMod = new Config(array(),true);
+			} else {
+				$this->classMod = $adapter->loadConfig($file);
+			}
+		}
+		return $this->classMod;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getAutoloadMapFilename(){
+		return $this->pluginConfig['autoloadMapFilename'];
+	}
+	
+	/**
+	 * @return Config
+	 * @throws \RuntimeException
+	 */
+	public function getAutoloadMap(){
+		if(!$this->autoloadMap){
+			$adapter = $this->getStorageAdapter();
+			$cachedir = $this->getCachedir();
+			$file = $cachedir.'/'.$this->getAutoloadMapFilename();
+			if(!$adapter->fileExists($file)){
+				$this->autoloadMap = new Config(array(),true);
+			} else {
+				$this->autoloadMap = $adapter->loadConfig($file);
+			}
+		}
+		return $this->autoloadMap;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getBasedir(){
+		return $this->pluginConfig['basedir'];
+	}
+	
+	/**
+	 * @param string $moduleName
+	 * @param Module $module
+	 */
 	public function addModule($moduleName,Module $module){
 		$this->modules[$moduleName] = $module;
 	}
 	
+	/**
+	 * @param string $moduleName
+	 */
 	public function removeModule($moduleName){
 		if(isset($this->modules[$moduleName])){
 			unset($this->modules[$moduleName]);
 		}
 	}
 	
+	/**
+	 * @param string $moduleName
+	 * @return Module
+	 */
 	public function getModule($moduleName){
 		if(!isset($this->modules[$moduleName])){
-			$this->modules[$moduleName] = $this->getClassLoader()->newInstance(__CLASS__,__FUNCTION__,'moduleClass',$moduleName,array(
-				'BricksPlugin' => $this,
-				'moduleName' => $moduleName				
-			));
+			$this->modules[$moduleName] = $this->getClassLoader()->newInstance(
+				__CLASS__,__FUNCTION__,'moduleClass',$moduleName,array(
+					'BricksPlugin' => $this,
+					'moduleName' => $moduleName
+				)				
+			);
 		}
 		return $this->modules[$moduleName];
 	}
 	
+	/**
+	 * @param array $modules
+	 */
 	public function autoCompile(array $modules=null){
 		$modules = null!==$modules?$modules:$this->getLoadedModules();
 		foreach($modules AS $module){
@@ -85,6 +238,20 @@ class Plugin {
 			}
 		}
 	}
+	
+	public function writeAutoloadMap(){
+		$cachedir = $this->getCachedir();
+		$file = $cachedir.'/'.$this->getAutoloadMapFilename();
+		$writer = new PhpArray();
+		$writer->toFile($file,$this->getAutoloadMap(),true);
+	}
+	
+	public function writeClassMod(){
+		$cachedir = $this->getCachedir();
+		$file = $cachedir.'/'.$this->getClassModFilename();
+		$writer = new PhpArray();
+		$writer->toFile($file,$this->getClassMod(),true);
+	}	
 	
 }
 
