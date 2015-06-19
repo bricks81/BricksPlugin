@@ -12,6 +12,9 @@ use Bricks\Plugin\Extender;
 
 interface VisitorInterface {
 	
-	public function extend(Extender $extender);
+	/**
+	 * Extends a given class
+	 */
+	public function extend();
 	
 }

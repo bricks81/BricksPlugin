@@ -19,10 +19,20 @@ use Bricks\Plugin\PhpParser\Visitors\FileRefComment;
 
 class Extender {
 	
+	/**
+	 * @var array
+	 */
 	protected $nodes = array();
 	
+	/**
+	 * @var array
+	 */
 	protected $eventized = array();
 	
+	/**
+	 * @param $nodes
+	 * @param string $classpath
+	 */
 	public function __construct($nodes,$classpath){		
 		$this->nodes = $nodes;
 		$traverser = new NodeTraverser(false);
@@ -33,6 +43,11 @@ class Extender {
 		$traverser->traverse($this->nodes);
 	}
 	
+	/**
+	 * @param string $namespace
+	 * @param string $class
+	 * @param string $method
+	 */
 	public function eventize($namespace,$class,$method){		
 		if(!isset($eventized[$method])){
 			
@@ -110,6 +125,11 @@ class Extender {
 		$eventized[$method] = true;
 	}
 	
+	/**
+	 * @param Node $rootNode
+	 * @param string $namespace
+	 * @return Node|boolean
+	 */
 	protected function fetchNamespace(Node $rootNode,$namespace){
 		if('Stmt_Namespace'==$rootNode->getType() && implode('\\',$rootNode->name->parts) == $namespace){
 			return $rootNode;
@@ -117,6 +137,11 @@ class Extender {
 		return false;
 	}
 	
+	/**
+	 * @param Node $namespaceNode
+	 * @param string $class
+	 * @return Node|boolean
+	 */
 	public function fetchClass(Node $namespaceNode,$class){
 		foreach($namespaceNode->stmts AS $node){
 			if('Stmt_Class'==$node->getType() && $node->name == $class){
@@ -126,6 +151,11 @@ class Extender {
 		return false;
 	}
 	
+	/**
+	 * @param Node $classNode
+	 * @param string $method
+	 * @return Node|boolean
+	 */
 	public function fetchMethod(Node $classNode,$method){
 		foreach($classNode->getMethods() AS $node){
 			if($node->name == $method){
