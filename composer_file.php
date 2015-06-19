@@ -11,7 +11,7 @@ if(!isset($cfg['BricksPlugin'])){
 $cl = $cfg['BricksClassLoader']['BricksPlugin']['BricksPlugin'];
 $cfg = $cfg['BricksConfig']['BricksPlugin']['BricksPlugin'];
 
-$cachedir = rtrim($cfg['storageAdapter']['cachedir'],'/');
+$cachedir = rtrim($cfg['cachedir'],'/');
 $appCfgFile = $cfg['composerFile']['appCfgFile'];
 $eventManager = $cfg['composerFile']['eventManager'];
 
