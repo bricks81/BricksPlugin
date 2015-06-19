@@ -16,26 +16,24 @@
 				),
 			),				
 		),		
-		'BricksPlugin' => array(
-			'basedir' => './',
-			'cachedir' => dirname(__DIR__).'/cache',
-			'classModFilename' => 'classmod.php',
-			'autoloadMapFilename' => 'autoloadClassmap.php',
-			'composerFile' => array(
-				'appCfgFile' => dirname(__DIR__).'/../../config/application.config.php',
-				'eventManager' => 'Zend\EventManager\EventManager',
-				'requireOnce' => array(
-					dirname(__DIR__).'/../../vendor/zendframework/zendframework/library/Zend/Stdlib/CallbackHandler.php',
-					dirname(__DIR__).'/../../vendor/zendframework/zendframework/library/Zend/Stdlib/PriorityQueue.php',
-					dirname(__DIR__).'/../../vendor/zendframework/zendframework/library/Zend/EventManager/EventManagerInterface.php',
-					dirname(__DIR__).'/../../vendor/zendframework/zendframework/library/Zend/EventManager/EventManager.php',
-					dirname(__DIR__).'/src/BricksPlugin/Plugin/Zend/Loader/ClassMapAutoloader.php',
-				),
-			),
-		),
 		'BricksConfig' => array(
 			'BricksPlugin' => array(
-				'BricksPlugin' => array(					
+				'BricksPlugin' => array(
+					'basedir' => './',
+					'cachedir' => dirname(__DIR__).'/cache',
+					'classModFilename' => 'classmod.php',
+					'autoloadMapFilename' => 'autoloadClassmap.php',
+					'composerFile' => array(
+						'appCfgFile' => dirname(__DIR__).'/../../config/application.config.php',
+						'eventManager' => 'Zend\EventManager\EventManager',
+						'requireOnce' => array(
+							dirname(__DIR__).'/../../vendor/zendframework/zendframework/library/Zend/Stdlib/CallbackHandler.php',
+							dirname(__DIR__).'/../../vendor/zendframework/zendframework/library/Zend/Stdlib/PriorityQueue.php',
+							dirname(__DIR__).'/../../vendor/zendframework/zendframework/library/Zend/EventManager/EventManagerInterface.php',
+							dirname(__DIR__).'/../../vendor/zendframework/zendframework/library/Zend/EventManager/EventManager.php',
+							dirname(__DIR__).'/src/BricksPlugin/Plugin/Zend/Loader/ClassMapAutoloader.php',
+						),
+					),
 					'autoCompile' => true,
 					'extend' => array(
 						'Zend\Loader\ClassMapAutoloader' => array(

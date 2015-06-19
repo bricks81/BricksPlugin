@@ -4,7 +4,7 @@ $cfg = require(__DIR__.'/config/module.config.php');
 if(!isset($cfg['BricksClassLoader']['BricksPlugin']['BricksPlugin'])){
 	return;
 }
-if(!isset($cfg['BricksConfig']['BricksPlugin']['BricksPlugin'])){
+if(!isset($cfg['BricksPlugin'])){
 	return;
 }
 

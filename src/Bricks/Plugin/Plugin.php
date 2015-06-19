@@ -43,11 +43,6 @@ class Plugin {
 	protected $storageAdapter;
 	
 	/**
-	 * @var array
-	 */
-	protected $pluginConfig = array();
-	
-	/**
 	 * @var \Zend\Config\Config
 	 */
 	protected $classMod;
@@ -69,8 +64,7 @@ class Plugin {
 	){
 		$this->setConfig($config);
 		$this->setClassLoader($classLoader);				
-		$this->setLoadedModules($loadedModules);
-		$this->pluginConfig = $config->getConfig()->getZendConfig()->BricksPlugin->toArray();				
+		$this->setLoadedModules($loadedModules);						
 	}
 	
 	/**
@@ -132,15 +126,22 @@ class Plugin {
 	/**
 	 * @return string
 	 */
+	public function getBasedir(){
+		return $this->getConfig()->get('basedir');
+	}
+	
+	/**
+	 * @return string
+	 */
 	public function getCachedir(){
-		return $this->pluginConfig['cachedir'];
+		return $this->getConfig()->get('cachedir');
 	}
 	
 	/**
 	 * @return string
 	 */
 	public function getClassModFilename(){
-		return $this->pluginConfig['classModFilename'];
+		return $this->getConfig()->get('classModFilename');
 	}
 	
 	/**
@@ -165,7 +166,7 @@ class Plugin {
 	 * @return string
 	 */
 	public function getAutoloadMapFilename(){
-		return $this->pluginConfig['autoloadMapFilename'];
+		return $this->getConfig()->get('autoloadMapFilename');
 	}
 	
 	/**
@@ -184,13 +185,6 @@ class Plugin {
 			}
 		}
 		return $this->autoloadMap;
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getBasedir(){
-		return $this->pluginConfig['basedir'];
 	}
 	
 	/**
