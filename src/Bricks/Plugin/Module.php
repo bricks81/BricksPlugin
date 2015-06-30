@@ -194,6 +194,7 @@ class Module {
 						$path = $match[1];
 					}
 				}
+				
 				if(!isset($mod->$class->extends)){
 					$mod->$class->extends = array();
 				}
@@ -210,10 +211,10 @@ class Module {
 		
 			$filepath = $cachedir.'/classes/'.str_replace(
 				$storage->realpath($basedir),'',$classpath
-			);
+			);			
 		
 			// write the class
-			$content = $this->build($classpath,$extends,$namespace);
+			$content = $this->build($classpath,$extends,$namespace);						
 			$storage->filePutContents($filepath,$content);
 		
 			$autoload->$class = $filepath;

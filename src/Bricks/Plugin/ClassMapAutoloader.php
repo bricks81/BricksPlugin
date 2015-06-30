@@ -96,7 +96,7 @@ class ClassMapAutoloader implements SplAutoloader {
 	 * @return boolean
 	 */
 	public function autoload($class){
-		if($this->hasClassMap($class)){
+		if($this->hasClassMap($class)){			
 			$src = $this->getClassMap($class);
 			require_once($src);
 			return true;		

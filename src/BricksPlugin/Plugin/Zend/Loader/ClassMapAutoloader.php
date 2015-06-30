@@ -22,7 +22,7 @@ class ClassMapAutoloader implements VisitorInterface {
 	/**
 	 * @var autoloader tmp
 	 */
-	protected $autoloader;
+	protected static $autoloader;
 		
 	/**
 	 * @var Extender
@@ -61,10 +61,10 @@ class ClassMapAutoloader implements VisitorInterface {
 	/**
 	 * @param Event $event
 	 */
-	public function preRegister(Event $event){				
+	public function preRegister(Event $event){						
 		foreach(spl_autoload_functions() AS $autoloader){
 			if(is_array($autoloader) && $autoloader[0] instanceof MainClassLoader){
-				$this->autoloader = $autoloader;
+				self::$autoloader = $autoloader;
 				spl_autoload_unregister($autoloader);
 				break;
 			}
@@ -74,9 +74,9 @@ class ClassMapAutoloader implements VisitorInterface {
 	/**
 	 * @param Event $event
 	 */
-	public function postRegister(Event $event){
-		if($this->autoloader){
-			spl_autoload_register($this->autoloader,true,true);
+	public function postRegister(Event $event){		
+		if(self::$autoloader){						
+			spl_autoload_register(self::$autoloader,true,true);
 		}
 	}
 	
