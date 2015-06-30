@@ -19,10 +19,10 @@ class FilesystemAdapter implements StorageAdapterInterface {
 	 * @see \Bricks\Plugin\StorageAdapter\AdapterInterface::filePutContents()
 	 */
 	public function filePutContents($filename,$content){
-		if(!is_dir(dirname($file))){
+		if(!is_dir(dirname($filename))){
 			Directory::mkdir(dirname($filename));
 		}		
-		return file_put_contents($file,$content);		
+		return file_put_contents($filename,$content);		
 	}
 	
 	/**

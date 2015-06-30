@@ -32,14 +32,14 @@ class ClassMapAutoloader implements VisitorInterface {
 	/**
 	 * @param Extender $extender
 	 */
-	public function __construct(Extender $extender){
+	public function __construct(Extender $extender=null){
 		$this->setExtender($extender);
 	}
 	
 	/**
 	 * @param Extender $extender
 	 */
-	public function setExtender(Extender $extender){
+	public function setExtender(Extender $extender=null){
 		$this->extender = $extender;
 	}
 	
@@ -61,7 +61,7 @@ class ClassMapAutoloader implements VisitorInterface {
 	/**
 	 * @param Event $event
 	 */
-	public function preRegister(Event $event){		
+	public function preRegister(Event $event){				
 		foreach(spl_autoload_functions() AS $autoloader){
 			if(is_array($autoloader) && $autoloader[0] instanceof MainClassLoader){
 				$this->autoloader = $autoloader;

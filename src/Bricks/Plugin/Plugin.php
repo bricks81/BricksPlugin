@@ -226,7 +226,7 @@ class Plugin {
 	public function autoCompile(array $modules=null){
 		$modules = null!==$modules?$modules:$this->getLoadedModules();
 		foreach($modules AS $module){
-			if($this->getConfig()->get('autoCompile',$module)){
+			if($this->getConfig()->get('autoCompile',$module)){				
 				$module = $this->getModule($module);
 				$module->compile();
 			}

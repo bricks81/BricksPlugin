@@ -12,6 +12,8 @@ use Zend\Config\Config;
 use Bricks\Plugin\StorageAdapter\StorageAdapterInterface;
 use PhpParser\Node;
 use PhpParser\PrettyPrinter\Standard;
+use PhpParser\Lexer;
+use PhpParser\Parser;
 
 class Module {
 	
@@ -131,18 +133,18 @@ class Module {
 	 * @param string $namespace
 	 * @throws \RuntimeException
 	 */
-	public function compile($namespace=null){
+	public function compile($namespace=null){		
 		$namespace = $namespace?:$this->getNamespace();
 		$storage = $this->getStorageAdapter($namespace);
-		$autoloadMap = $this->getPlugin()->getAutoloadMap();
-		$classMod = $this->getPlugin()->getClassMod();
-		$extend = $this->getPlugin()->getConfig()->getArray('extend',$namespace);
+		$autoload = $this->getPlugin()->getAutoloadMap();
+		$mod = $this->getPlugin()->getClassMod();
+		$extend = $this->getPlugin()->getConfig()->get('extend',$namespace);
 		$basedir = $this->getPlugin()->getBasedir();
 		$cachedir = $this->getPlugin()->getCachedir();
-		
-		foreach($extend AS $class => $extends){		
-			$compile = false;		
-			if(isset($mod->$class)){
+
+		foreach($extend AS $class => $extends){					
+			$compile = false;
+			if(isset($mod->$class)){				
 				$_time = $storage->fileMTime($mod->$class->filepath);
 				if($mod->$class->time!=$_time){
 					$compile = true;
@@ -158,6 +160,8 @@ class Module {
 						break;
 					}
 				}
+			} else {
+				$compile = true;
 			}
 			if(!$compile){
 				continue;
@@ -173,6 +177,7 @@ class Module {
 					// the autoload map has been changed to use the extended class
 					$classpath = $match[1];
 				}
+				$mod->$class = array();
 			}
 			$mod->$class->filepath = $classpath;
 			$mod->$class->time = $storage->fileMTime($classpath);
@@ -188,6 +193,12 @@ class Module {
 						// the autoload map has been changed to use the extended class
 						$path = $match[1];
 					}
+				}
+				if(!isset($mod->$class->extends)){
+					$mod->$class->extends = array();
+				}
+				if(!isset($mod->$class->extends->$extend)){
+					$mod->$class->extends->$extend = array();
 				}
 				$mod->$class->extends->$extend->filepath = $path;
 				$mod->$class->extends->$extend->time = $storage->fileMTime($path);
@@ -237,15 +248,18 @@ class Module {
 		$namespace = $namespace?:$this->getNamespace();
 		$extender = $this->getPlugin()->getClassLoader()->newInstance(
 			__CLASS__,__FUNCTION__,'extender',$namespace,array(
-				'Module' => $module,
-				'namespace' => $namespace
+				'nodes' => $nodes,
+				'classpath' => $classpath,
+				'extends' => $extends,
+				'namespace' => $namespace,
+				'Module' => $this
 			)
 		);		
 		foreach($extends AS $className){
 			$object = $this->getPlugin()->getClassLoader()->newInstance(
 				__CLASS__,__FUNCTION__,$className,$namespace,array(
 					'Extender' => $extender,
-					'Module' => $module,					
+					'Module' => $this,					
 					'namespace' => $namespace
 				)
 			);

@@ -4,7 +4,7 @@ $cfg = require(__DIR__.'/config/module.config.php');
 if(!isset($cfg['BricksClassLoader']['BricksPlugin']['BricksPlugin'])){
 	return;
 }
-if(!isset($cfg['BricksPlugin'])){
+if(!isset($cfg['BricksConfig']['BricksPlugin'])){
 	return;
 }
 
@@ -12,7 +12,6 @@ $cl = $cfg['BricksClassLoader']['BricksPlugin']['BricksPlugin'];
 $cfg = $cfg['BricksConfig']['BricksPlugin']['BricksPlugin'];
 
 $cachedir = rtrim($cfg['cachedir'],'/');
-$appCfgFile = $cfg['composerFile']['appCfgFile'];
 $eventManager = $cfg['composerFile']['eventManager'];
 
 $filepath = $cachedir.'/autoloadClassmap.php';
@@ -26,8 +25,7 @@ if(!file_exists($filepath)){
 require_once(__DIR__.'/src/Bricks/Plugin/Extender/VisitorInterface.php');
 require_once(__DIR__.'/src/Bricks/Plugin/ClassMapAutoloader.php');
 
-$app = require($appCfgFile);
-if(false!==array_search('BricksPlugin',$app['modules'])){
+if(false!==$cfg['composerFile']['enabled']){
 	$loader = new Bricks\Plugin\ClassMapAutoloader(array(
 		'cachedir' => $cachedir
 	));
@@ -42,7 +40,11 @@ if(false!==array_search('BricksPlugin',$app['modules'])){
 	$eventManager = new $eventManager();
 	foreach($cfg['listeners'] AS $event => $callbacks){
 		foreach($callbacks AS $callback => $priority){			
-			$eventManager->attach($event,$callback,$priority);
+			$eventManager->attach($event,function($e) use($callback){
+				$parts = explode('::',$callback);
+				$obj = new $parts[0];
+				return $obj->$parts[1]($e);
+			},$priority);			
 		}
 	}
 	

@@ -1,6 +1,7 @@
 <?php
 
-	return array(
+	use Zend\Mvc\Application;
+return array(
 		'service_manager' => array(
 			'factories' => array(
 				'BricksPlugin' => 'Bricks\Plugin\ServiceManager\PluginFactory',
@@ -18,19 +19,19 @@
 		),		
 		'BricksConfig' => array(
 			'BricksPlugin' => array(
-				'BricksPlugin' => array(
+				'BricksPlugin' => array(					
 					'basedir' => './',
 					'cachedir' => dirname(__DIR__).'/cache',
 					'classModFilename' => 'classmod.php',
 					'autoloadMapFilename' => 'autoloadClassmap.php',
 					'composerFile' => array(
-						'appCfgFile' => dirname(__DIR__).'/../../config/application.config.php',
+						'enabled' => true,						
 						'eventManager' => 'Zend\EventManager\EventManager',
 						'requireOnce' => array(
-							dirname(__DIR__).'/../../vendor/zendframework/zendframework/library/Zend/Stdlib/CallbackHandler.php',
-							dirname(__DIR__).'/../../vendor/zendframework/zendframework/library/Zend/Stdlib/PriorityQueue.php',
-							dirname(__DIR__).'/../../vendor/zendframework/zendframework/library/Zend/EventManager/EventManagerInterface.php',
-							dirname(__DIR__).'/../../vendor/zendframework/zendframework/library/Zend/EventManager/EventManager.php',
+							'./vendor/zendframework/zendframework/library/Zend/Stdlib/CallbackHandler.php',
+							'./vendor/zendframework/zendframework/library/Zend/Stdlib/PriorityQueue.php',
+							'./vendor/zendframework/zendframework/library/Zend/EventManager/EventManagerInterface.php',
+							'./vendor/zendframework/zendframework/library/Zend/EventManager/EventManager.php',
 							dirname(__DIR__).'/src/BricksPlugin/Plugin/Zend/Loader/ClassMapAutoloader.php',
 						),
 					),
@@ -48,7 +49,7 @@
 							'BricksPlugin\Plugin\Zend\Loader\ClassMapAutoloader::postRegister' => -100000,
 						),
 					),					
-				),
+				),				
 			),			
 		),
 	);

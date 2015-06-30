@@ -9,7 +9,8 @@
 namespace BricksPlugin;
 
 use Zend\Mvc\MvcEvent;
-use Bricks\Plugin\PluginService;
+use Zend\ModuleManager\ModuleManager;
+use Zend\ModuleManager\ModuleEvent;
 
 class Module {
 	
@@ -25,9 +26,12 @@ class Module {
         );
     }
     
-    public function onBootstrap(MvcEvent $e){    	    	
-    	$service = $e->getApplication()->getServiceManager()->get('BricksPlugin');
-    	$service->autoCompile();
+    public function init(ModuleManager $m){
+    	$m->getEventManager()->attach('loadModules.post',function(ModuleEvent $e){
+    		$sm = $e->getTarget()->getEvent()->getParam('ServiceManager');
+    		$service = $sm->get('BricksPlugin');
+    		$service->autoCompile();
+    	});
     }
     
 }
