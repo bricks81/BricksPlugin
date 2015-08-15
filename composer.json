@@ -11,6 +11,8 @@
     "minimum-stability": "dev",
     "require": {
     	"php": ">=5.3.3",
+    	"zendframework/zend-stdlib":"2.*@stable",
+    	"zendframework/zend-eventmanager":"2.*@stable",
     	"bricks81/bricks-config": "dev-master",
     	"bricks81/bricks-class-loader": "dev-master"
     },
