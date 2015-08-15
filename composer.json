@@ -14,7 +14,8 @@
     	"zendframework/zend-stdlib":"2.*@stable",
     	"zendframework/zend-eventmanager":"2.*@stable",
     	"bricks81/bricks-config": "dev-master",
-    	"bricks81/bricks-class-loader": "dev-master"
+    	"bricks81/bricks-class-loader": "dev-master",
+    	"nikic/php-parser": "1.4.*@stable"
     },
     "autoload": {
     	"classmap": ["Module.php"],
