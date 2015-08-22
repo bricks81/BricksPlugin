@@ -1,7 +1,7 @@
 {
     "name": "bricks81/bricks-plugin",
     "description": "Bricks CMS Framework Plugin Concept",
-    "license": "GPLv3",
+    "license": "MIT",
     "authors": [
         {
             "name": "Sven Ullmann",
