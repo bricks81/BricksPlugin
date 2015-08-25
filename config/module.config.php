@@ -4,18 +4,22 @@ return array(
 		'factories' => array(
 			'BricksPlugin' => 'Bricks\Plugin\ServiceManager\PluginFactory'
 		)
-	),
-	'BricksClassLoader' => array(
-		'BricksPlugin' => array(
-			'BricksPlugin' => array(
-				'pluginClass' => 'Bricks\Plugin\Plugin',
-				'moduleClass' => 'Bricks\Plugin\Module',
-				'storageAdapter' => 'Bricks\Plugin\StorageAdapter\FilesystemAdapter',
-				'extender' => 'Bricks\Plugin\Extender'
-			)
-		)
-	),
+	),	
 	'BricksConfig' => array(
+		'BricksClassLoader' => array(
+			'BricksClassLoader' => array(
+				'classMap' => array(
+					'BricksPlugin' => array(
+						'BricksPlugin' => array(
+							'pluginClass' => 'Bricks\Plugin\Plugin',
+							'moduleClass' => 'Bricks\Plugin\Module',
+							'storageAdapter' => 'Bricks\Plugin\StorageAdapter\FilesystemAdapter',
+							'extender' => 'Bricks\Plugin\Extender'
+						)
+					)
+				),
+			),
+		),
 		'BricksPlugin' => array(
 			'BricksPlugin' => array(
 				'basedir' => './',
