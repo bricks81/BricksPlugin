@@ -26,14 +26,9 @@
  */
 
 $cfg = require (__DIR__ . '/config/module.config.php');
-if(!isset($cfg['BricksClassLoader']['BricksPlugin']['BricksPlugin'])) {
+if(!isset($cfg['BricksConfig']['BricksPlugin']['BricksPlugin'])) {
 	return;
 }
-if(!isset($cfg['BricksConfig']['BricksPlugin'])) {
-	return;
-}
-
-$cl = $cfg['BricksClassLoader']['BricksPlugin']['BricksPlugin'];
 $cfg = $cfg['BricksConfig']['BricksPlugin']['BricksPlugin'];
 
 $cachedir = rtrim($cfg['cachedir'], '/');
@@ -59,6 +54,7 @@ if(false !== $cfg['composerFile']['enabled']) {
 	foreach($cfg['composerFile']['requireOnce'] as $file) {
 		require_once ($file);
 	}
+	
 	/**
 	 *
 	 * @var \Zend\EventManager\EventManager

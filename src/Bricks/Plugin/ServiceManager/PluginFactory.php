@@ -40,7 +40,7 @@ class PluginFactory implements FactoryInterface {
 
 		$config = $sl->get('BricksConfig')->getConfig('BricksPlugin');
 		$classLoader = $sl->get('BricksClassLoader')->getClassLoader('BricksPlugin');
-		$loadedModules = array_keys($sl->get('ModuleManager')->getLoadedModules());
+		$loadedModules = array_keys($config->getConfig()->getArray('BricksPlugin'));
 		
 		$service = $classLoader->newInstance(__CLASS__,__METHOD__,'pluginClass','BricksPlugin',array(
 			'BricksConfig' => $config,
