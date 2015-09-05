@@ -86,6 +86,7 @@ class Plugin {
 		$this->setLoadedModules($loadedModules);
 		
 		$em = $classLoader->getClassLoader()->getServiceLocator()->get('EventManager');
+		
 		$listeners = array();
 		foreach($loadedModules AS $namespace){
 			$ret = $config->get('listeners',$namespace);
@@ -104,18 +105,15 @@ class Plugin {
 				}
 			}			
 		}	
-		
-		$events = $em->getEvents();
+				
 		foreach($listeners AS $event => $_listeners){
 			asort($_listeners);
 			foreach($_listeners AS $callback => $prio){
-				if(false === array_search($event,$events)){
-					$em->attach($event, function ($e) use($callback) {
-						$parts = explode('::', $callback);
-						$obj = new $parts[0]();
-						return $obj->$parts[1]($e);
-					}, $prio);
-				}
+				$em->attach($event, function ($e) use($callback) {
+					$parts = explode('::', $callback);
+					$obj = new $parts[0]();
+					return $obj->$parts[1]($e);
+				}, $prio);				
 			}
 		}
 		
