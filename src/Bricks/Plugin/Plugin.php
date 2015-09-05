@@ -95,6 +95,12 @@ class Plugin {
 			}
 			foreach($ret AS $event => $_listeners){
 				foreach($_listeners AS $listener => $prio){
+					if('BricksPlugin\Plugin\Zend\Loader\ClassMapAutoloader::preRegister'==$listener){
+						continue;
+					}
+					if('BricksPlugin\Plugin\Zend\Loader\ClassMapAutoloader::postRegister'==$listener){
+						continue;
+					}
 					if(!isset($listeners[$event])){
 						$listeners[$event] = $_listeners;
 						break;
@@ -105,17 +111,19 @@ class Plugin {
 				}
 			}			
 		}	
-				
-		foreach($listeners AS $event => $_listeners){
+		
+		foreach($listeners AS $event => $_listeners){		
 			asort($_listeners);
 			foreach($_listeners AS $callback => $prio){
-				$em->attach($event, function ($e) use($callback) {
+				$em->attach($event, function ($e) use($callback,$classLoader) {					
 					$parts = explode('::', $callback);
 					$obj = new $parts[0]();
+					$obj->setClassLoader($classLoader->getClassLoader());
 					return $obj->$parts[1]($e);
-				}, $prio);				
+				}, $prio);
 			}
 		}
+		$GLOBALS['BricksPlugin/EventManager'] = $em;		
 		
 	}
 	
