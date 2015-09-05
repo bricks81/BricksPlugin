@@ -45,8 +45,7 @@ class PluginFactory implements FactoryInterface {
 		$service = $classLoader->newInstance(__CLASS__,__METHOD__,'pluginClass','BricksPlugin',array(
 			'BricksConfig' => $config,
 			'BricksClassLoader' => $classLoader,
-			'loadedModules' => $loadedModules,
-			'ServiceLocator' => $sl
+			'loadedModules' => $loadedModules			
 		));
 		
 		return $service;
