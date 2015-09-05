@@ -83,7 +83,42 @@ class Plugin {
 	){
 		$this->setConfig($config);
 		$this->setClassLoader($classLoader);				
-		$this->setLoadedModules($loadedModules);						
+		$this->setLoadedModules($loadedModules);
+		
+		$em = $classLoader->getClassLoader()->getServiceLocator()->get('EventManager');
+		$listeners = array();
+		foreach($loadedModules AS $namespace){
+			$ret = $config->get('listeners',$namespace);
+			if(!is_array($ret)){
+				continue;
+			}
+			foreach($ret AS $event => $_listeners){
+				foreach($_listeners AS $listener => $prio){
+					if(!isset($listeners[$event])){
+						$listeners[$event] = $_listeners;
+						break;
+					}
+					if(false !== array_search(array($listener=>$prio),$listeners[$event])){
+						$listeners[$event][] = array($listener=>$prio);	
+					}					
+				}
+			}			
+		}	
+		
+		$events = $em->getEvents();
+		foreach($listeners AS $event => $_listeners){
+			asort($_listeners);
+			foreach($_listeners AS $callback => $prio){
+				if(false === array_search($event,$events)){
+					$em->attach($event, function ($e) use($callback) {
+						$parts = explode('::', $callback);
+						$obj = new $parts[0]();
+						return $obj->$parts[1]($e);
+					}, $prio);
+				}
+			}
+		}
+		
 	}
 	
 	/**
