@@ -38,12 +38,11 @@ class PluginFactory implements FactoryInterface {
 	 */
 	public function createService(ServiceLocatorInterface $sl){
 
-		$config = $sl->get('BricksConfig')->getConfig('BricksPlugin');
-		$classLoader = $sl->get('BricksClassLoader')->getClassLoader('BricksPlugin');
+		$classLoader = $sl->get('BricksClassLoader');
 		$loadedModules = array_keys($config->getConfig()->getArray('BricksPlugin'));
 		
-		$service = $classLoader->newInstance(__CLASS__,__METHOD__,'pluginClass','BricksPlugin',array(
-			'BricksConfig' => $config,
+		$class = $classLoader->aliasToClass('pluginClass','BricksPlugin');
+		$service = $classLoader->get($class,'BricksPlugin',array(
 			'BricksClassLoader' => $classLoader,
 			'loadedModules' => $loadedModules			
 		));
