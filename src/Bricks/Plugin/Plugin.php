@@ -173,7 +173,7 @@ class Plugin {
 	public function getStorageAdapter(){
 		if(!$this->storageAdapter){
 			$this->storageAdapter = $this->getClassLoader()->get(
-				'storageAdapter','BricksPlugin',array(
+				'BricksPlugin.storageAdapter','BricksPlugin',array(
 					'BricksPlugin' => $this
 				)
 			);
@@ -269,7 +269,7 @@ class Plugin {
 	public function getModule($moduleName){
 		if(!isset($this->modules[$moduleName])){
 			$this->modules[$moduleName] = $this->getClassLoader()->get(
-				'moduleClass','BricksPlugin',array(
+				'BricksPlugin.moduleClass',$moduleName,array(
 					'BricksPlugin' => $this,
 					'moduleName' => $moduleName
 				)				

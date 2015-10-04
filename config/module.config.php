@@ -7,12 +7,14 @@ return array(
 	),	
 	'BricksConfig' => array(
 		'BricksClassLoader' => array(
-			'BricksPlugin' => array(
-				'classMap' => array(
-					'pluginClass' => 'Bricks\Plugin\Plugin',
-					'moduleClass' => 'Bricks\Plugin\Module',
-					'storageAdapter' => 'Bricks\Plugin\StorageAdapter\FilesystemAdapter',
-					'extender' => 'Bricks\Plugin\Extender'
+			'BricksClassLoader' => array(
+				'aliasMap' => array(
+					'BricksPlugin' => array(
+						'pluginClass' => 'Bricks\Plugin\Plugin',
+						'moduleClass' => 'Bricks\Plugin\Module',
+						'storageAdapter' => 'Bricks\Plugin\StorageAdapter\FilesystemAdapter',
+						'extender' => 'Bricks\Plugin\Extender'
+					),
 				),
 			),
 		),

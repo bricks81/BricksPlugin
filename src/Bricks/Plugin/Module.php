@@ -130,7 +130,7 @@ class Module {
 		$namespace = $namespace?:$this->getNamespace();
 		if(!isset($this->storageAdapters[$namespace])){
 			$this->storageAdapters[$namespace] = $this->getPlugin()->getClassLoader()->get(
-				'storageAdapter',$namespace,array(
+				'BricksPlugin.storageAdapter',$namespace,array(
 					'Module' => $this,
 					'namespace' => $namespace	
 				)
