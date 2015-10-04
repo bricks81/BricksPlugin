@@ -129,8 +129,8 @@ class Module {
 	public function getStorageAdapter($namespace=null){
 		$namespace = $namespace?:$this->getNamespace();
 		if(!isset($this->storageAdapters[$namespace])){
-			$this->storageAdapters[$namespace] = $this->getPlugin()->getClassLoader()->newInstance(
-				__CLASS__,__FUNCTION__,'storageAdapter',$namespace,array(
+			$this->storageAdapters[$namespace] = $this->getPlugin()->getClassLoader()->get(
+				'storageAdapter',$namespace,array(
 					'Module' => $this,
 					'namespace' => $namespace	
 				)
@@ -266,8 +266,8 @@ class Module {
 	 */
 	protected function extend($nodes,$classpath,array $extends,$namespace=null){
 		$namespace = $namespace?:$this->getNamespace();
-		$extender = $this->getPlugin()->getClassLoader()->newInstance(
-			__CLASS__,__FUNCTION__,'extender',$namespace,array(
+		$extender = $this->getPlugin()->getClassLoader()->get(
+			'extender',$namespace,array(
 				'nodes' => $nodes,
 				'classpath' => $classpath,
 				'extends' => $extends,
@@ -276,8 +276,8 @@ class Module {
 			)
 		);		
 		foreach($extends AS $className){
-			$object = $this->getPlugin()->getClassLoader()->newInstance(
-				__CLASS__,__FUNCTION__,$className,$namespace,array(
+			$object = $this->getPlugin()->getClassLoader()->get(
+				$className,$namespace,array(
 					'Extender' => $extender,
 					'Module' => $this,					
 					'namespace' => $namespace

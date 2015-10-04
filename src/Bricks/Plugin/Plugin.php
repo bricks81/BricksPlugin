@@ -87,7 +87,7 @@ class Plugin {
 		
 		$listeners = array();
 		foreach($loadedModules AS $namespace){
-			$ret = $config->get('listeners',$namespace);
+			$ret = $this->getConfig()->get('listeners',$namespace);
 			if(!is_array($ret)){
 				continue;
 			}
@@ -172,9 +172,8 @@ class Plugin {
 	 */
 	public function getStorageAdapter(){
 		if(!$this->storageAdapter){
-			$class = $this->getClassLoader()->aliasToClass('storageAdapter');
 			$this->storageAdapter = $this->getClassLoader()->get(
-				$class,'BricksPlugin',array(
+				'storageAdapter','BricksPlugin',array(
 					'BricksPlugin' => $this
 				)
 			);
@@ -269,9 +268,8 @@ class Plugin {
 	 */
 	public function getModule($moduleName){
 		if(!isset($this->modules[$moduleName])){
-			$class = $this->getClassLoader()->aliasToClass('moduleClass',$moduleName);
 			$this->modules[$moduleName] = $this->getClassLoader()->get(
-				$class,$moduleName,array(
+				'moduleClass','BricksPlugin',array(
 					'BricksPlugin' => $this,
 					'moduleName' => $moduleName
 				)				

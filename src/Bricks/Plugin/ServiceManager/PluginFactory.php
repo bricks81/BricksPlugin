@@ -39,10 +39,9 @@ class PluginFactory implements FactoryInterface {
 	public function createService(ServiceLocatorInterface $sl){
 
 		$classLoader = $sl->get('BricksClassLoader');
-		$loadedModules = array_keys($config->getConfig()->getArray('BricksPlugin'));
+		$loadedModules = array_keys($classLoader->getConfig()->getZendConfig()->BricksConfig->BricksPlugin->toArray());
 		
-		$class = $classLoader->aliasToClass('pluginClass','BricksPlugin');
-		$service = $classLoader->get($class,'BricksPlugin',array(
+		$service = $classLoader->get('pluginClass','BricksPlugin',array(
 			'BricksClassLoader' => $classLoader,
 			'loadedModules' => $loadedModules			
 		));
