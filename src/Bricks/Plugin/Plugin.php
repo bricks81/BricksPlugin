@@ -116,7 +116,7 @@ class Plugin {
 				$em->attach($event, function ($e) use($callback,$classLoader) {					
 					$parts = explode('::', $callback);
 					$obj = new $parts[0]();
-					$obj->setClassLoader($classLoader->getClassLoader());
+					$obj->setClassLoader($classLoader);
 					return $obj->$parts[1]($e);
 				}, $prio);
 			}
