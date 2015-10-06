@@ -6,20 +6,20 @@ return array(
 		)
 	),	
 	'BricksConfig' => array(
-		'BricksClassLoader' => array(
-			'BricksClassLoader' => array(
+		'BricksClassLoader' => array( // module to config
+			'BricksClassLoader' => array( // namespace				
 				'aliasMap' => array(
 					'BricksPlugin' => array(
 						'pluginClass' => 'Bricks\Plugin\Plugin',
 						'moduleClass' => 'Bricks\Plugin\Module',
 						'storageAdapter' => 'Bricks\Plugin\StorageAdapter\FilesystemAdapter',
 						'extender' => 'Bricks\Plugin\Extender'
-					),
+					),																									
 				),
-			),
+			),			
 		),
-		'BricksPlugin' => array(
-			'BricksPlugin' => array(
+		'BricksPlugin' => array( // module to config
+			'BricksPlugin' => array( // namespace
 				'basedir' => './',
 				'cachedir' => dirname(__DIR__ ) . '/cache',
 				'classModFilename' => 'classmod.php',
