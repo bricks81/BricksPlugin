@@ -265,16 +265,16 @@ class Module {
 	 * @param string $namespace
 	 */
 	protected function extend($nodes,$classpath,array $extends,$namespace=null){
-		$namespace = $namespace?:$this->getNamespace();
+		$namespace = $namespace?:$this->getNamespace();		
 		$extender = $this->getPlugin()->getClassLoader()->get(
-			'extender',$namespace,array(
+			'BricksPlugin.extender',$namespace,array(
 				'nodes' => $nodes,
 				'classpath' => $classpath,
 				'extends' => $extends,
 				'namespace' => $namespace,
 				'Module' => $this
 			)
-		);		
+		);
 		foreach($extends AS $className){
 			$object = $this->getPlugin()->getClassLoader()->get(
 				$className,$namespace,array(
