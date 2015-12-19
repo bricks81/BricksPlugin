@@ -6,26 +6,24 @@ return array(
 		)
 	),	
 	'BricksConfig' => array(
-		'BricksClassLoader' => array( // module to config
-			'BricksClassLoader' => array( // namespace				
+		'__DEFAULT_NAMESPACE__' => array(
+			'BricksClassLoader' => array( // namespace
 				'aliasMap' => array(
 					'BricksPlugin' => array(
 						'pluginClass' => 'Bricks\Plugin\Plugin',
 						'moduleClass' => 'Bricks\Plugin\Module',
 						'storageAdapter' => 'Bricks\Plugin\StorageAdapter\FilesystemAdapter',
 						'extender' => 'Bricks\Plugin\Extender'
-					),																									
+					),
 				),
-			),			
-		),
-		'BricksPlugin' => array( // module to config
+			),
 			'BricksPlugin' => array( // namespace
 				'basedir' => './',
 				'cachedir' => dirname(__DIR__ ) . '/cache',
 				'classModFilename' => 'classmod.php',
 				'autoloadMapFilename' => 'autoloadClassmap.php',
 				'composerFile' => array(
-					'enabled' => true,
+					'enabled' => false,
 					'eventManager' => 'Zend\EventManager\EventManager',
 					'requireOnce' => array(
 						'./vendor/zendframework/zend-stdlib/src/CallbackHandler.php',
@@ -33,13 +31,13 @@ return array(
 						'./vendor/zendframework/zend-eventmanager/src/EventManagerInterface.php',
 						'./vendor/zendframework/zend-eventmanager/src/EventManager.php',
 						dirname(__DIR__ ) . '/src/BricksPlugin/Plugin/Zend/Loader/ClassMapAutoloader.php'
-					)
+					),
 				),
-				'autoCompile' => true,
+				'autoCompile' => false,
 				'extend' => array(
 					'Zend\Loader\ClassMapAutoloader' => array(
 						'BricksPlugin\Plugin\Zend\Loader\ClassMapAutoloader'
-					)
+					),
 				),
 				'listeners' => array(
 					'Zend\Loader\ClassMapAutoloader::register.pre' => array(
@@ -47,10 +45,10 @@ return array(
 					),
 					'Zend\Loader\ClassMapAutoloader::register.post' => array(
 						'BricksPlugin\Plugin\Zend\Loader\ClassMapAutoloader::postRegister' => -100000
-					)
-				)
-			)
-		)
-	)
+					),
+				),
+			),
+		),
+	),
 );
 ?>
